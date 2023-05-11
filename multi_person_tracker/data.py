@@ -56,3 +56,14 @@ class ImageFolder(Dataset):
     def __getitem__(self, idx):
         img = cv2.cvtColor(cv2.imread(self.image_file_names[idx]), cv2.COLOR_BGR2RGB)
         return to_tensor(img)
+    
+class ImageList(Dataset):
+    def __init__(self, image_list):
+        self.image_file_names = image_list
+
+    def __len__(self):
+        return len(self.image_file_names)
+
+    def __getitem__(self, idx):
+        img = cv2.cvtColor(cv2.imread(self.image_file_names[idx]), cv2.COLOR_BGR2RGB)
+        return to_tensor(img)

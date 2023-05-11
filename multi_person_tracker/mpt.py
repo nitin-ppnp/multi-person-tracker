@@ -11,7 +11,7 @@ from torchvision.models.detection import keypointrcnn_resnet50_fpn
 from yolov3.yolo import YOLOv3
 
 from multi_person_tracker import Sort
-from multi_person_tracker.data import ImageFolder, images_to_video
+from multi_person_tracker.data import ImageFolder, images_to_video, ImageList
 
 class MPT():
     def __init__(
@@ -300,5 +300,15 @@ class MPT():
         detections = self.run_detector(dataloader)
         if self.display:
             self.display_detection_results(image_folder, detections, output_file)
+        detections = self.prepare_output_detections(detections)
+        return detections
+
+    def detect_on_image_list(self, image_list, output_file=None):
+        image_dataset = ImageList(image_list)
+
+        dataloader = DataLoader(image_dataset, batch_size=self.batch_size, num_workers=0)
+
+        detections = self.run_detector(dataloader)
+
         detections = self.prepare_output_detections(detections)
         return detections
